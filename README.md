@@ -13,3 +13,9 @@ Because currently the autostart of GUI sessions is a mess:
   - session switching performs a logout and a new login: ugly, clogger logs, easy to break
   - session switching must depend on how you logged in: the whole distro must be specialized
 
+## How To
+
+Using SessionRunner is easy enough: configure you login software (can be gdm, sddm or any other)
+to run SessionRunner when the user has performed the login.
+
+Exact configurations steps depends on the method used to login.
