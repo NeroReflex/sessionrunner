@@ -1,6 +1,6 @@
 {
     "kind": "service",
-    "cmd": "login_ng-session",
+    "cmd": "sessionrunner",
     "args": [ "restart" ],
     "stop_signal": "SIGTERM",
     "max_restarts": 0,

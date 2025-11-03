@@ -10,7 +10,6 @@ license-file = "../LICENSE.md"
 [dependencies]
 rust-ini = { version = "*" }
 libc = { version = "*", features = [] }
-whoami = { version = "*" }
 
 [package.metadata.deb]
 license-file = ["../LICENSE.md", "4"]
@@ -24,6 +23,6 @@ assets = [
     ["../rootfs/usr/lib/os-session-select", "usr/lib/", "755"],
     ["../rootfs/usr/lib/sessionexec/session-return.sh", "usr/lib/", "755"],
     ["../rootfs/usr/share/applications/org.sessionexec.session-return.desktop", "usr/share/applications/", "755"],
-    ["../rootfs/usr/lib/login_ng-session/steamdeck.service", "usr/lib/login_ng-session/", "644"],
-    ["../rootfs/usr/lib/login_ng-session/restart_session.service", "usr/lib/login_ng-session/", "644"],
+    ["../rootfs/usr/lib/sessionrunner/steamdeck.service", "usr/lib/sessionrunner/", "644"],
+    ["../rootfs/usr/lib/sessionrunner/restart_session.service", "usr/lib/sessionrunner/", "644"],
 ]

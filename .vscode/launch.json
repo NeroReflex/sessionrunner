@@ -249,16 +249,16 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in library 'login_ng_session'",
+            "name": "Debug unit tests in library 'sessionrunner'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
                     "--lib",
-                    "--package=login_ng-session"
+                    "--package=sessionrunner"
                 ],
                 "filter": {
-                    "name": "login_ng_session",
+                    "name": "sessionrunner",
                     "kind": "lib"
                 }
             },
@@ -268,15 +268,15 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable 'login_ng-session'",
+            "name": "Debug executable 'sessionrunner'",
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=login_ng-session",
-                    "--package=login_ng-session"
+                    "--bin=sessionrunner",
+                    "--package=sessionrunner"
                 ],
                 "filter": {
-                    "name": "login_ng-session",
+                    "name": "sessionrunner",
                     "kind": "bin"
                 }
             },
@@ -286,16 +286,16 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in executable 'login_ng-session'",
+            "name": "Debug unit tests in executable 'sessionrunner'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=login_ng-session",
-                    "--package=login_ng-session"
+                    "--bin=sessionrunner",
+                    "--package=sessionrunner"
                 ],
                 "filter": {
-                    "name": "login_ng-session",
+                    "name": "sessionrunner",
                     "kind": "bin"
                 }
             },
@@ -305,15 +305,15 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable 'login_ng-sessionctl'",
+            "name": "Debug executable 'sessionrunnerctl'",
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=login_ng-sessionctl",
-                    "--package=login_ng-session"
+                    "--bin=sessionrunnerctl",
+                    "--package=sessionrunner"
                 ],
                 "filter": {
-                    "name": "login_ng-sessionctl",
+                    "name": "sessionrunnerctl",
                     "kind": "bin"
                 }
             },
@@ -323,16 +323,16 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in executable 'login_ng-sessionctl'",
+            "name": "Debug unit tests in executable 'sessionrunnerctl'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=login_ng-sessionctl",
-                    "--package=login_ng-session"
+                    "--bin=sessionrunnerctl",
+                    "--package=sessionrunner"
                 ],
                 "filter": {
-                    "name": "login_ng-sessionctl",
+                    "name": "sessionrunnerctl",
                     "kind": "bin"
                 }
             },

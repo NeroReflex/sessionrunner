@@ -8,7 +8,7 @@ strip = "debuginfo"
 
 [workspace]
 members = [
-    "login_ng-session",
+    "sessionrunner",
     "sessionexec"
 ]
 resolver = "2"

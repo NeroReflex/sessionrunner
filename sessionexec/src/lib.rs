@@ -46,3 +46,30 @@ pub(crate) fn execve_wrapper(
 
     unreachable!()
 }
+
+pub(crate) fn get_unix_username(uid: u32) -> Option<String> {
+    unsafe {
+        let mut result = std::ptr::null_mut();
+        let amt = match libc::sysconf(libc::_SC_GETPW_R_SIZE_MAX) {
+            n if n < 0 => 512 as usize,
+            n => n as usize,
+        };
+        let mut buf = Vec::with_capacity(amt);
+        let mut passwd: libc::passwd = std::mem::zeroed();
+
+        match libc::getpwuid_r(
+            uid,
+            &mut passwd,
+            buf.as_mut_ptr(),
+            buf.capacity() as libc::size_t,
+            &mut result,
+        ) {
+            0 if !result.is_null() => {
+                let ptr = passwd.pw_name as *const _;
+                let username = std::ffi::CStr::from_ptr(ptr).to_str().unwrap().to_owned();
+                Some(username)
+            }
+            _ => None,
+        }
+    }
+}

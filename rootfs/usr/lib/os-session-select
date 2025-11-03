@@ -101,5 +101,5 @@ mkdir -p $HOME/.config/sessionexec/
 echo "$session_launcher.desktop" | tee "$HOME/.config/sessionexec/default"
 sync
 
-# switch the session now by restarting login_ng-session default session
-login_ng-sessionctl restart
+# switch the session now by restarting sessionrunner default session
+sessionrunnerctl restart

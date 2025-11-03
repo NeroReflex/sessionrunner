@@ -21,41 +21,14 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::sync::Arc;
 
-use login_ng_session::dbus::SessionManagerDBus;
-use login_ng_session::desc::NodeServiceDescriptor;
-use login_ng_session::errors::SessionManagerError;
-use login_ng_session::manager::SessionManager;
-use login_ng_session::node::{SessionNode, SessionNodeRestart, SessionNodeType};
-use login_ng_session::signal::Signal;
+use sessionrunner::dbus::SessionManagerDBus;
+use sessionrunner::desc::NodeServiceDescriptor;
+use sessionrunner::errors::SessionManagerError;
+use sessionrunner::manager::SessionManager;
+use sessionrunner::node::{SessionNode, SessionNodeRestart, SessionNodeType};
+use sessionrunner::signal::Signal;
 use std::time::{SystemTime, UNIX_EPOCH};
 use zbus::connection;
-
-pub(crate) fn get_unix_username(uid: u32) -> Option<String> {
-    unsafe {
-        let mut result = std::ptr::null_mut();
-        let amt = match libc::sysconf(libc::_SC_GETPW_R_SIZE_MAX) {
-            n if n < 0 => 512 as usize,
-            n => n as usize,
-        };
-        let mut buf = Vec::with_capacity(amt);
-        let mut passwd: libc::passwd = std::mem::zeroed();
-
-        match libc::getpwuid_r(
-            uid,
-            &mut passwd,
-            buf.as_mut_ptr(),
-            buf.capacity() as libc::size_t,
-            &mut result,
-        ) {
-            0 if !result.is_null() => {
-                let ptr = passwd.pw_name as *const _;
-                let username = std::ffi::CStr::from_ptr(ptr).to_str().unwrap().to_owned();
-                Some(username)
-            }
-            _ => None,
-        }
-    }
-}
 
 pub(crate) fn get_home_dir(uid: u32) -> Option<String> {
     unsafe {
@@ -113,15 +86,13 @@ pub(crate) fn get_shell(uid: u32) -> Option<String> {
 
 #[tokio::main]
 async fn main() -> Result<(), SessionManagerError> {
-    let username = get_unix_username(unsafe { libc::getuid() }).unwrap();
-
     let user_homedir = PathBuf::from(get_home_dir(unsafe { libc::getuid() }).expect("Failed to get user information"));
     let load_directories = vec![
         user_homedir
             .join(".config")
-            .join("login_ng-session"),
-        PathBuf::from("/etc/login_ng-session/"),
-        PathBuf::from("/usr/lib/login_ng-session/"),
+            .join("sessionrunner"),
+        PathBuf::from("/etc/sessionrunner/"),
+        PathBuf::from("/usr/lib/sessionrunner/"),
     ];
 
     let default_service_name = String::from("default.service");
@@ -136,11 +107,11 @@ async fn main() -> Result<(), SessionManagerError> {
     {
         Ok(_) => {}
         Err(err) => match err {
-            login_ng_session::errors::NodeLoadingError::IOError(err) => {
+            sessionrunner::errors::NodeLoadingError::IOError(err) => {
                 eprintln!("File error: {err}");
                 std::process::exit(-1)
             }
-            login_ng_session::errors::NodeLoadingError::FileNotFound(filename) => {
+            sessionrunner::errors::NodeLoadingError::FileNotFound(filename) => {
                 // if the default target is missing use the default user shell
                 if filename == default_service_name {
                     let shell = get_shell(unsafe { libc::getuid() }).expect("Failed to get user information");
@@ -168,15 +139,15 @@ async fn main() -> Result<(), SessionManagerError> {
                     std::process::exit(-1)
                 }
             }
-            login_ng_session::errors::NodeLoadingError::CyclicDependency(filename) => {
+            sessionrunner::errors::NodeLoadingError::CyclicDependency(filename) => {
                 eprintln!("Cycle for target: {filename}");
                 std::process::exit(-1)
             }
-            login_ng_session::errors::NodeLoadingError::JSONError(err) => {
+            sessionrunner::errors::NodeLoadingError::JSONError(err) => {
                 eprintln!("JSON deserialization error: {err}");
                 std::process::exit(-1)
             }
-            login_ng_session::errors::NodeLoadingError::InvalidKind(err) => {
+            sessionrunner::errors::NodeLoadingError::InvalidKind(err) => {
                 eprintln!("JSON syntax error: unrecognised kind value {err}");
                 std::process::exit(-1)
             }
@@ -198,24 +169,6 @@ async fn main() -> Result<(), SessionManagerError> {
     std::fs::create_dir(manager_runtime_path.clone()).unwrap();
 
     let manager = Arc::new(SessionManager::new(nodes));
-
-    // This is the default user dbus address
-    // DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
-    // where /run/user/1000 is XDG_RUNTIME_DIR
-    match std::env::var("DBUS_SESSION_BUS_ADDRESS") {
-        Ok(value) => println!("Starting dbus service on socket {value}"),
-        Err(err) => {
-            println!("Couldn't read dbus socket address: {err} - using default...");
-            std::env::set_var(
-                "DBUS_SESSION_BUS_ADDRESS",
-                format!(
-                    "unix:path={}/bus",
-                    xdg_runtime_dir.as_os_str().to_string_lossy()
-                )
-                .as_str(),
-            )
-        }
-    }
 
     let dbus_manager = connection::Builder::session()
         .map_err(SessionManagerError::ZbusError)?

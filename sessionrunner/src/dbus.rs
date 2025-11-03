@@ -49,9 +49,13 @@ pub struct TargetStatus {
 )]
 impl SessionManagerDBus {
     pub async fn start(&self, target: String) -> u32 {
-        self.manager.start(&target).await;
-
-        todo!()
+        match self.manager.start(&target).await {
+            Ok(_) => 0u32,
+            Err(err) => {
+                eprint!("Error starting {target}: {err}");
+                todo!()
+            }
+        }
     }
 
     pub async fn stop(&self, target: String) -> u32 {

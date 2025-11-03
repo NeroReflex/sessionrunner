@@ -20,11 +20,11 @@
 use std::path::PathBuf;
 
 use argh::FromArgs;
-use login_ng_session::dbus::SessionManagerDBusProxy;
+use sessionrunner::dbus::SessionManagerDBusProxy;
 use zbus::Connection;
 
 #[derive(FromArgs, PartialEq, Debug)]
-/// Command line tool for managing login_ng-session
+/// Command line tool for managing sessionrunner
 struct Args {
     #[argh(option, short = 't')]
     /// the target to be started/stopped/restarted or the subtree to be evaluated
@@ -36,7 +36,7 @@ struct Args {
 
 #[derive(FromArgs, PartialEq, Debug)]
 #[argh(subcommand)]
-/// Subcommands for managing login_ng-session
+/// Subcommands for managing sessionrunner
 enum Command {
     Inspect(InspectCommand),
     Start(StartCommand),
@@ -50,17 +50,17 @@ enum Command {
 struct InspectCommand {}
 
 #[derive(FromArgs, PartialEq, Debug)]
-/// Start a target from within login_ng-session
+/// Start a target from within sessionrunner
 #[argh(subcommand, name = "start")]
 struct StartCommand {}
 
 #[derive(FromArgs, PartialEq, Debug)]
-/// Stop a target from within login_ng-session
+/// Stop a target from within sessionrunner
 #[argh(subcommand, name = "stop")]
 struct StopCommand {}
 
 #[derive(FromArgs, PartialEq, Debug)]
-/// Restart a target from within login_ng-session
+/// Restart a target from within sessionrunner
 #[argh(subcommand, name = "restart")]
 struct RestartCommand {}
 

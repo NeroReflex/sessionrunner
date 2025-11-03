@@ -103,7 +103,7 @@ impl Runner for PlasmaRunner {
             // Check if the command is running
             let output = Command::new("pgrep")
                 .arg("-u")
-                .arg(whoami::username())
+                .arg(crate::get_unix_username(unsafe { libc::getuid() }).unwrap())
                 .arg(wait_cmd)
                 .output()
                 .expect("Failed to execute pgrep");

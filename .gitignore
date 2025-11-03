@@ -1,7 +1,6 @@
 /target
 /*/target
 /install
-/pam_login_ng-common/*.json
 /.vscode/settings.json
 *.deb
 *.rpm
