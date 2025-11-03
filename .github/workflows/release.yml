@@ -107,18 +107,11 @@ jobs:
     - name: Build bitbake
       run: |
         mkdir ../bitbake
-        cd sessionrunner
         cargo build
         /github/home/.cargo/bin/cargo-bitbake bitbake
         mv *.bb ../bitbake
-        cd ..
-        cd sessionexec
-        cargo build
-        /github/home/.cargo/bin/cargo-bitbake bitbake
-        mv *.bb ../bitbake
-        cd ..
     - name: Build bitbake
-      run: zip -r bitbake.zip bitbake
+      run: zip -r bitbake.zip ../bitbake
     - name: Upload package artifact
       uses: actions/upload-artifact@v4
       with:
