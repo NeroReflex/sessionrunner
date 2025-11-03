@@ -10,3 +10,4 @@ cargo bitbake
 git add .
 git commit -m "Bump version to $new_version"
 git tag $new_version
+git push origin main --tags
