@@ -25,7 +25,7 @@ use crate::{desc::NodeServiceDescriptor, manager::SessionManager};
 
 #[tokio::test]
 async fn test_not_found() {
-    let load_path = PathBuf::from("../test_data/test_not_found");
+    let load_path = PathBuf::from("test_data/test_not_found");
     assert!(load_path.exists());
 
     let load_directoried = vec![load_path.clone()];
@@ -49,7 +49,7 @@ async fn test_not_found() {
 
 #[tokio::test]
 async fn test_cyclic_deps() {
-    let load_path = PathBuf::from("../test_data/test_cyclic_deps");
+    let load_path = PathBuf::from("test_data/test_cyclic_deps");
     assert!(load_path.exists());
 
     let load_directoried = vec![load_path.clone()];
@@ -78,7 +78,7 @@ async fn test_cyclic_deps() {
 
 #[tokio::test]
 async fn test_restart() {
-    let load_path = PathBuf::from("../test_data/test_restart");
+    let load_path = PathBuf::from("test_data/test_restart");
     assert!(load_path.exists());
 
     let load_directoried = vec![load_path.clone()];
