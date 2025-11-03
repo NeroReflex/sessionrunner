@@ -59,7 +59,7 @@ jobs:
       run: |
         mkdir prefix
         make PREFIX=prefix install
-        cd prefix && tar -cjf ../login_ng.tar.bz2 . && cd ..
+        cd prefix && tar -cjf ../sessionrunner.tar.bz2 . && cd ..
     - name: Move build artifact
       run: |
         for file in *.tar.bz2; do mv "$file" "${file%.tar.bz2}.bin.tar.bz2"; done
@@ -206,8 +206,8 @@ jobs:
       run: pacman -S --noconfirm tar bzip2
     - name: Collect sources
       run: |
-        tar -cjf ../login_ng.src.tar.bz2 .
-        mv ../login_ng.src.tar.bz2 .
+        tar -cjf ../sessionrunner.src.tar.bz2 .
+        mv ../sessionrunner.src.tar.bz2 .
     - name: Upload package artifact
       uses: actions/upload-artifact@v4
       with:

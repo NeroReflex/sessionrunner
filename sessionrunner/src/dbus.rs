@@ -41,10 +41,10 @@ pub struct TargetStatus {
 }
 
 #[interface(
-    name = "org.neroreflex.login_ng_service1",
+    name = "org.neroreflex.sessionrunner1",
     proxy(
-        default_service = "org.neroreflex.login_ng_service",
-        default_path = "/org/neroreflex/login_ng_service"
+        default_service = "org.neroreflex.sessionrunner",
+        default_path = "/org/neroreflex/sessionrunner"
     )
 )]
 impl SessionManagerDBus {

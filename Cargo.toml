@@ -9,7 +9,6 @@ strip = "debuginfo"
 [workspace]
 members = [
     "sessionrunner",
-    "sessionexec",
-    "start-sessionrunner"
+    "sessionexec"
 ]
 resolver = "2"

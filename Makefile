@@ -10,7 +10,7 @@ install_sessionrunner: sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/sessionrunne
 	install -D -m 755 rootfs/usr/share/wayland-sessions/sessionrunner.desktop $(PREFIX)/usr/share/wayland-sessions/sessionrunner.desktop
 
 install_start-sessionrunner: sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/start-sessionrunner
-	install -D -m 755 start-sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/start-sessionrunner $(PREFIX)/usr/bin/start-sessionrunner
+	install -D -m 755 sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/start-sessionrunner $(PREFIX)/usr/bin/start-sessionrunner
 
 .PHONY_: install_sessionexec
 install_sessionexec: sessionexec/target/$(TARGET)/$(BUILD_TYPE)/sessionexec
@@ -38,7 +38,7 @@ sessionexec/target/$(TARGET)/$(BUILD_TYPE)/sessionexec: fetch
 	cd sessionexec && cargo build --frozen --offline --all-features --$(BUILD_TYPE) --target=$(TARGET) --target-dir target
 
 sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/start-sessionrunner: fetch
-	cd start-sessionrunner && cargo build --frozen --offline --all-features --$(BUILD_TYPE) --target=$(TARGET) --target-dir target
+	cd sessionrunner && cargo build --frozen --offline --all-features --$(BUILD_TYPE) --target=$(TARGET) --target-dir target --bin start-sessionrunner
 
 sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/sessionrunner: fetch
 	cd sessionrunner && cargo build --frozen --offline --all-features --$(BUILD_TYPE) --target=$(TARGET) --target-dir target

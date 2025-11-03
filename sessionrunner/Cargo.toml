@@ -1,8 +1,8 @@
 [package]
 name = "sessionrunner"
-version = "0.9.0"
+version = "0.9.1"
 description = "A manager for user sessions."
-homepage = "https://github.com/NeroReflex/login_ng"
+homepage = "https://github.com/NeroReflex/sessionrunner"
 authors = ["Denis Benato <benato.denis96@gmail.com>"]
 edition = "2021"
 license-file = "../LICENSE.md"
@@ -10,6 +10,10 @@ license-file = "../LICENSE.md"
 [[bin]]
 name = "sessionrunnerctl"
 path = "src/sessionctl/main.rs"
+
+[[bin]]
+name = "start-sessionrunner"
+path = "src/start-sessionrunner/main.rs"
 
 [dependencies]
 argh = "^0"
@@ -30,6 +34,6 @@ priority = "optional"
 assets = [
     ["target/release/sessionrunner", "usr/bin/", "755"],
     ["target/release/sessionrunnerctl", "usr/bin/", "755"],
-    ["../rootfs/usr/bin/start-sessionrunner", "usr/bin/", "755"],
+    ["target/release/start-sessionrunner", "usr/bin/", "755"],
     ["../rootfs/usr/share/wayland-sessions/sessionrunner.desktop", "usr/share/wayland-sessions/", "755"],
 ]

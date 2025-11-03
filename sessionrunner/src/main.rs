@@ -173,10 +173,10 @@ async fn main() -> Result<(), SessionManagerError> {
 
     let dbus_manager = connection::Builder::session()
         .map_err(SessionManagerError::ZbusError)?
-        .name("org.neroreflex.login_ng_service")
+        .name("org.neroreflex.sessionrunner")
         .map_err(SessionManagerError::ZbusError)?
         .serve_at(
-            "/org/neroreflex/login_ng_service",
+            "/org/neroreflex/sessionrunner",
             SessionManagerDBus::new(manager.clone()),
         )
         .map_err(SessionManagerError::ZbusError)?

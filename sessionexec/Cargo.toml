@@ -2,7 +2,7 @@
 name = "sessionexec"
 version = "1.0.0"
 description = "Starts the user desktop environment of choice."
-homepage = "https://github.com/NeroReflex/login_ng"
+homepage = "https://github.com/NeroReflex/sessionrunner"
 authors = ["Denis Benato <benato.denis96@gmail.com>"]
 edition = "2021"
 license-file = "../LICENSE.md"
