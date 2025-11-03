@@ -57,9 +57,9 @@ jobs:
       run: make all
     - name: Create package
       run: |
-        mkdir prefix
-        make PREFIX=prefix install
-        cd prefix && tar -cjf ../sessionrunner.tar.bz2 . && cd ..
+        mkdir install
+        make PREFIX=install install
+        cd install && tar -cjf ../sessionrunner.tar.bz2 . && cd ..
     - name: Move build artifact
       run: |
         for file in *.tar.bz2; do mv "$file" "${file%.tar.bz2}.bin.tar.bz2"; done

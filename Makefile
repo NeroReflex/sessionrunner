@@ -4,17 +4,17 @@ TARGET ?= $(shell rustc -vV | grep "host" | sed 's/host: //')
 ETC_DIR ?= etc
 
 .PHONY_: install_sessionrunner
-install_sessionrunner: sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/sessionrunner sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/sessionrunnerctl
-	install -D -m 755 sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/sessionrunner $(PREFIX)/usr/bin/sessionrunner
-	install -D -m 755 sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/sessionrunnerctl $(PREFIX)/usr/bin/sessionrunnerctl
+install_sessionrunner: target/$(TARGET)/$(BUILD_TYPE)/sessionrunner target/$(TARGET)/$(BUILD_TYPE)/sessionrunnerctl
+	install -D -m 755 target/$(TARGET)/$(BUILD_TYPE)/sessionrunner $(PREFIX)/usr/bin/sessionrunner
+	install -D -m 755 target/$(TARGET)/$(BUILD_TYPE)/sessionrunnerctl $(PREFIX)/usr/bin/sessionrunnerctl
 	install -D -m 755 rootfs/usr/share/wayland-sessions/sessionrunner.desktop $(PREFIX)/usr/share/wayland-sessions/sessionrunner.desktop
 
-install_start-sessionrunner: sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/start-sessionrunner
-	install -D -m 755 sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/start-sessionrunner $(PREFIX)/usr/bin/start-sessionrunner
+install_start-sessionrunner: target/$(TARGET)/$(BUILD_TYPE)/start-sessionrunner
+	install -D -m 755 target/$(TARGET)/$(BUILD_TYPE)/start-sessionrunner $(PREFIX)/usr/bin/start-sessionrunner
 
 .PHONY_: install_sessionexec
-install_sessionexec: sessionexec/target/$(TARGET)/$(BUILD_TYPE)/sessionexec
-	install -D -m 755 sessionexec/target/$(TARGET)/$(BUILD_TYPE)/sessionexec $(PREFIX)/usr/bin/sessionexec
+install_sessionexec: target/$(TARGET)/$(BUILD_TYPE)/sessionexec
+	install -D -m 755 target/$(TARGET)/$(BUILD_TYPE)/sessionexec $(PREFIX)/usr/bin/sessionexec
 	install -D -m 755 rootfs/usr/lib/sessionexec/session-return.sh $(PREFIX)/usr/lib/sessionexec/session-return.sh
 	install -D -m 755 rootfs/usr/lib/os-session-select $(PREFIX)/usr/lib/os-session-select
 	install -D -m 644 rootfs/usr/lib/sessionrunner/steamdeck.service $(PREFIX)/usr/lib/sessionrunner/steamdeck.service
@@ -28,34 +28,31 @@ install_sessionexec: sessionexec/target/$(TARGET)/$(BUILD_TYPE)/sessionexec
 install: install_sessionrunner install_sessionexec install_start-sessionrunner
 
 .PHONY: build
-build: sessionexec/target/$(TARGET)/$(BUILD_TYPE)/sessionexec sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/sessionrunner sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/sessionrunnerctl
+build: target/$(TARGET)/$(BUILD_TYPE)/sessionexec target/$(TARGET)/$(BUILD_TYPE)/sessionrunner target/$(TARGET)/$(BUILD_TYPE)/sessionrunnerctl
 
 .PHONY: fetch
 fetch: Cargo.lock
 	cargo fetch --locked
 
-sessionexec/target/$(TARGET)/$(BUILD_TYPE)/sessionexec: fetch
-	cd sessionexec && cargo build --frozen --offline --all-features --$(BUILD_TYPE) --target=$(TARGET) --target-dir target
+target/$(TARGET)/$(BUILD_TYPE)/sessionexec: fetch
+	cargo build --frozen --offline --all-features --$(BUILD_TYPE) --target=$(TARGET) --target-dir target --bin sessionexec
 
-sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/start-sessionrunner: fetch
-	cd sessionrunner && cargo build --frozen --offline --all-features --$(BUILD_TYPE) --target=$(TARGET) --target-dir target --bin start-sessionrunner
+target/$(TARGET)/$(BUILD_TYPE)/start-sessionrunner: fetch
+	cargo build --frozen --offline --all-features --$(BUILD_TYPE) --target=$(TARGET) --target-dir target --bin start-sessionrunner
 
-sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/sessionrunner: fetch
-	cd sessionrunner && cargo build --frozen --offline --all-features --$(BUILD_TYPE) --target=$(TARGET) --target-dir target
+target/$(TARGET)/$(BUILD_TYPE)/sessionrunner: fetch
+	cargo build --frozen --offline --all-features --$(BUILD_TYPE) --target=$(TARGET) --target-dir target
 
-sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/sessionrunnerctl: fetch
-	cd sessionrunner && cargo build --frozen --offline --all-features --$(BUILD_TYPE) --target=$(TARGET) --target-dir target --bin sessionrunnerctl
+target/$(TARGET)/$(BUILD_TYPE)/sessionrunnerctl: fetch
+	cargo build --frozen --offline --all-features --$(BUILD_TYPE) --target=$(TARGET) --target-dir target --bin sessionrunnerctl
 
 .PHONY: clean
 clean:
 	cargo clean
-	rm -rf sessionrunner/target
-	rm -rf sessionexec/target
 
 .PHONY: all
 all: build
 
 .PHONY: deb
 deb: fetch
-	cd sessionexec && cargo-deb --all-features
-	cd sessionrunner && cargo-deb --all-features
+	cargo-deb --all-features
