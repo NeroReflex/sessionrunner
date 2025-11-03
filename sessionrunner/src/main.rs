@@ -86,11 +86,11 @@ pub(crate) fn get_shell(uid: u32) -> Option<String> {
 
 #[tokio::main]
 async fn main() -> Result<(), SessionManagerError> {
-    let user_homedir = PathBuf::from(get_home_dir(unsafe { libc::getuid() }).expect("Failed to get user information"));
+    let user_homedir = PathBuf::from(
+        get_home_dir(unsafe { libc::getuid() }).expect("Failed to get user information"),
+    );
     let load_directories = vec![
-        user_homedir
-            .join(".config")
-            .join("sessionrunner"),
+        user_homedir.join(".config").join("sessionrunner"),
         PathBuf::from("/etc/sessionrunner/"),
         PathBuf::from("/usr/lib/sessionrunner/"),
     ];
@@ -114,7 +114,8 @@ async fn main() -> Result<(), SessionManagerError> {
             sessionrunner::errors::NodeLoadingError::FileNotFound(filename) => {
                 // if the default target is missing use the default user shell
                 if filename == default_service_name {
-                    let shell = get_shell(unsafe { libc::getuid() }).expect("Failed to get user information");
+                    let shell = get_shell(unsafe { libc::getuid() })
+                        .expect("Failed to get user information");
 
                     eprintln!(
                         "Definition for {default_service_name} not found: using shell {shell}"

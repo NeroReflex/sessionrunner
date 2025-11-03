@@ -8,7 +8,9 @@ install_sessionrunner: sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/sessionrunne
 	install -D -m 755 sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/sessionrunner $(PREFIX)/usr/bin/sessionrunner
 	install -D -m 755 sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/sessionrunnerctl $(PREFIX)/usr/bin/sessionrunnerctl
 	install -D -m 755 rootfs/usr/share/wayland-sessions/sessionrunner.desktop $(PREFIX)/usr/share/wayland-sessions/sessionrunner.desktop
-	install -D -m 755 rootfs/usr/bin/start-sessionrunner $(PREFIX)/usr/bin/start-sessionrunner
+
+install_start-sessionrunner: sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/start-sessionrunner
+	install -D -m 755 start-sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/start-sessionrunner $(PREFIX)/usr/bin/start-sessionrunner
 
 .PHONY_: install_sessionexec
 install_sessionexec: sessionexec/target/$(TARGET)/$(BUILD_TYPE)/sessionexec
@@ -23,7 +25,7 @@ install_sessionexec: sessionexec/target/$(TARGET)/$(BUILD_TYPE)/sessionexec
 	ln -s game-mode.desktop $(PREFIX)/usr/share/wayland-sessions/default.desktop
 
 .PHONY: install
-install: install_sessionrunner install_sessionexec
+install: install_sessionrunner install_sessionexec install_start-sessionrunner
 
 .PHONY: build
 build: sessionexec/target/$(TARGET)/$(BUILD_TYPE)/sessionexec sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/sessionrunner sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/sessionrunnerctl
@@ -34,6 +36,9 @@ fetch: Cargo.lock
 
 sessionexec/target/$(TARGET)/$(BUILD_TYPE)/sessionexec: fetch
 	cd sessionexec && cargo build --frozen --offline --all-features --$(BUILD_TYPE) --target=$(TARGET) --target-dir target
+
+sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/start-sessionrunner: fetch
+	cd start-sessionrunner && cargo build --frozen --offline --all-features --$(BUILD_TYPE) --target=$(TARGET) --target-dir target
 
 sessionrunner/target/$(TARGET)/$(BUILD_TYPE)/sessionrunner: fetch
 	cd sessionrunner && cargo build --frozen --offline --all-features --$(BUILD_TYPE) --target=$(TARGET) --target-dir target

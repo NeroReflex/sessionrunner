@@ -24,5 +24,7 @@ pub mod manager;
 pub mod node;
 pub mod signal;
 
+pub use zbus;
+
 #[cfg(test)]
 pub(crate) mod tests;

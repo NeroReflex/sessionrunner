@@ -2,6 +2,6 @@
 Encoding=UTF-8
 Name=SessionRunner
 Comment=SessionRunner
-Exec=sessionrunner
+Exec=start-sessionrunner
 Type=Application
 DesktopNames=sessionrunner
