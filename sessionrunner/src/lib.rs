@@ -23,6 +23,7 @@ pub mod errors;
 pub mod manager;
 pub mod node;
 pub mod signal;
+pub mod sessionexec;
 
 pub use zbus;
 

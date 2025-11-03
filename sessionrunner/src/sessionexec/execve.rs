@@ -1,4 +1,4 @@
-use crate::{cstr::CStr, execve_wrapper, find_program_path, runner::Runner};
+use super::{cstr::CStr, execve_wrapper, find_program_path, runner::Runner};
 
 pub struct ExecveRunner {
     prog: CStr,

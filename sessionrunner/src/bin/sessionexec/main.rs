@@ -14,10 +14,10 @@ fn main() -> Result<(), Box<dyn Error>> {
 #[inline(never)]
 fn main() -> Result<(), Box<dyn Error>> {
     use ini::Ini;
-    use sessionexec::execve::ExecveRunner;
-    use sessionexec::gamescope::GamescopeExecveRunner;
-    use sessionexec::plasma::PlasmaRunner;
-    use sessionexec::runner::Runner;
+    use sessionrunner::sessionexec::execve::ExecveRunner;
+    use sessionrunner::sessionexec::gamescope::GamescopeExecveRunner;
+    use sessionrunner::sessionexec::plasma::PlasmaRunner;
+    use sessionrunner::sessionexec::runner::Runner;
     use std::path::PathBuf;
 
     let args: Vec<String> = std::env::args().collect();

@@ -681,19 +681,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "sessionexec"
-version = "1.0.0"
-dependencies = [
- "libc",
- "rust-ini",
-]
-
-[[package]]
 name = "sessionrunner"
 version = "0.9.1"
 dependencies = [
  "argh",
  "libc",
+ "rust-ini",
  "serde",
  "serde_json",
  "thiserror",
