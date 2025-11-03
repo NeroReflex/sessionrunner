@@ -682,7 +682,7 @@ dependencies = [
 
 [[package]]
 name = "sessionexec"
-version = "0.7.2"
+version = "1.0.0"
 dependencies = [
  "libc",
  "rust-ini",
@@ -690,7 +690,7 @@ dependencies = [
 
 [[package]]
 name = "sessionrunner"
-version = "0.7.2"
+version = "0.9.0"
 dependencies = [
  "argh",
  "libc",
