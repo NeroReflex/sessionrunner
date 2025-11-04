@@ -1,6 +1,6 @@
 [package]
 name = "sessionrunner"
-version = "0.9.4"
+version = "0.9.5"
 description = "A manager for user sessions."
 homepage = "https://github.com/NeroReflex/sessionrunner"
 authors = ["Denis Benato <benato.denis96@gmail.com>"]
